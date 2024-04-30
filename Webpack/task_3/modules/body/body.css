@@ -1,0 +1,12 @@
+/* body.css */
+#start-btn {
+  padding: 10px 20px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+#count {
+  display: inline-block;
+  font-weight: bold;
+  color: #555;
+}
