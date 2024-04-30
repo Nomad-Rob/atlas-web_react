@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start-dev": "webpack serve --mode development --open",
+    "start-dev": "webpack-dev-server --open",
     "build": "webpack"
   },
   "author": "Rob Farley",
