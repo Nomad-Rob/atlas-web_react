@@ -1,3 +1,6 @@
 src/**/*.css
 public/**/*.ico
 public/**/*.jpg
+src/**/*.ico
+src/**/*.jpg
+src/**/*.png
