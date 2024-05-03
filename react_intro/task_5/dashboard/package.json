@@ -14,7 +14,8 @@
   },
   "scripts": {
     "build": "webpack --config ./config/webpack.config.js",
-    "start": "webpack-dev-server --mode development --config config/webpack.config.js --open"
+    "start": "webpack-dev-server --mode development --config config/webpack.config.js --open",
+    "test": "jest"
   },
   "jest": {
     "moduleNameMapper": {
