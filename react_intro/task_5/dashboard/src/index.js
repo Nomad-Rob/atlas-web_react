@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App/App';
-import { Notifications } from './Notifications/Notifications';
+import Notifications from './Notifications/Notifications';
+
 
 // Root for the main app
 const root = ReactDOM.createRoot(document.getElementById('root'));
