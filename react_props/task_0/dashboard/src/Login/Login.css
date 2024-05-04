@@ -1,0 +1,44 @@
+.Login-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  min-height: 100vh;
+  border-top: 5px solid #00003C;
+  border-bottom: 5px solid #00003C;
+}
+
+.Login-body p {
+  font-family: 'Galano Grotesque Alt', sans-serif;
+  font-weight: 400;
+  font-size: 1.3rem;
+  margin: 4rem 2rem 1rem 4rem;
+}
+
+.Login-body label {
+  padding-right: .5rem;
+}
+
+.Login-body #email,
+#password {
+  margin-right: 1rem;
+  border: 1px solid #00003C;
+  border-radius: 8px;
+  box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0;
+}
+
+.Login-body button {
+  background-color: #1ED2AF;
+  border: 1px solid #00003C;
+  border-radius: 8px;
+  padding: .4rem;
+  box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+}
+
+.Login-body input:focus {
+  border-color: #1ED2AF !important;
+  outline: 2px solid #1ED2AF;
+}
