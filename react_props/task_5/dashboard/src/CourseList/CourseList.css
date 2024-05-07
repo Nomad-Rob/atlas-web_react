@@ -1,0 +1,35 @@
+#CourseList {
+  width: 90%;
+  border-collapse: collapse;
+  border: 1px solid #e0e0e0;
+  margin: 1rem auto;
+  font-family: 'Galano Grotesque Alt', sans-serif;
+  font-weight: 400;
+}
+
+#CourseList thead th[colspan="2"] {
+  text-align: center;
+}
+
+#CourseList thead tr:nth-child(2) th {
+  border-top: 2px solid #e0e0e0;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+#CourseList thead tr:nth-child(2) th:first-child {
+  text-align: left;
+  width: 70%;
+}
+
+#CourseList thead tr:nth-child(2) th:last-child {
+  text-align: left;
+  width: 30%;
+}
+
+#CourseList tbody tr td {
+  text-align: left;
+}
+
+#CourseList tbody tr td:last-child {
+  text-align: left;
+}
