@@ -183,7 +183,7 @@ Deploy your application to GitHub Pages using `gh-pages` branch and `create-reac
 Your application should be working correctly when accessing the GitHub URL.
 
 ```sh
-Add URLs here
+https://nomadrob.com/atlas-web_react/
 
 ```
 
