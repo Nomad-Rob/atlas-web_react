@@ -4,7 +4,7 @@
   align-items: flex-start;
   justify-content: flex-start;
   min-height: 100vh;
-  border-top: 5px solid #00003C;
+  border-top: 5px solid red;
   border-bottom: 5px solid #00003C;
 }
 
