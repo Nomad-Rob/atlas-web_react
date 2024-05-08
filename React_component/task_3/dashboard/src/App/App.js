@@ -7,6 +7,7 @@ import Login from '../Login/Login';
 import CourseList from '../CourseList/CourseList';
 import PropTypes from 'prop-types';
 import BodySectionWithMarginBottom from '../BodySection/BodySectionWithMarginBottom';
+import BodySection from '../BodySection/BodySection';
 
 class App extends Component {
   constructor(props) {
@@ -57,9 +58,12 @@ class App extends Component {
           </div>
         </div>
         <div className="App">
-          <BodySectionWithMarginBottom title={contentTitle}>
+          <BodySectionWithMarginBottom title={isLoggedIn ? "Course list" : "Log in to continue"}>
             {isLoggedIn ? <CourseList listCourses={listCourses} /> : <Login />}
           </BodySectionWithMarginBottom>
+          <BodySection title="News from the School">
+            <p>This is the latest news from our school community made by Rob!</p>
+          </BodySection>
           <Footer />
         </div>
       </>
