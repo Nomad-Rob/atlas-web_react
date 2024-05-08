@@ -7,3 +7,7 @@
 .bodySection h2 {
   margin-bottom: 10px;
 }
+
+.bodySectionWithMargin {
+  margin-bottom: 40px;
+}

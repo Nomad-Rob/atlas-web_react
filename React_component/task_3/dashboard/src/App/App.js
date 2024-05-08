@@ -6,7 +6,7 @@ import Footer from '../Footer/Footer';
 import Login from '../Login/Login';
 import CourseList from '../CourseList/CourseList';
 import PropTypes from 'prop-types';
-import BodySection from '../BodySection/BodySection';
+import BodySectionWithMarginBottom from '../BodySection/BodySectionWithMarginBottom';
 
 class App extends Component {
   constructor(props) {
@@ -57,9 +57,9 @@ class App extends Component {
           </div>
         </div>
         <div className="App">
-          <BodySection title={contentTitle}>
+          <BodySectionWithMarginBottom title={contentTitle}>
             {isLoggedIn ? <CourseList listCourses={listCourses} /> : <Login />}
-          </BodySection>
+          </BodySectionWithMarginBottom>
           <Footer />
         </div>
       </>
@@ -74,7 +74,7 @@ App.propTypes = {
 
 App.defaultProps = {
   isLoggedIn: false,
-  logOut: () => {}, // Default empty function for logOut
+  logOut: () => {},
 };
 
 export default App;
