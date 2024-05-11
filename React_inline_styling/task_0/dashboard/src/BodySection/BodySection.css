@@ -1,0 +1,13 @@
+.bodySection {
+  padding: 20px;
+  border: 1px solid #ccc;
+  margin-top: 20px;
+}
+
+.bodySection h2 {
+  margin-bottom: 10px;
+}
+
+.bodySectionWithMargin {
+  margin-bottom: 40px;
+}
