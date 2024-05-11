@@ -1,8 +1,19 @@
 import React from 'react';
 import { shallow } from 'enzyme';
+import { StyleSheetTestUtils } from 'aphrodite';
 import Notifications from './Notifications';
 
 describe('Notifications', () => {
+  beforeEach(() => {
+    // Suppress style injection before each test to prevent Aphrodite from affecting the DOM
+    StyleSheetTestUtils.suppressStyleInjection();
+  });
+
+  afterEach(() => {
+    // Clear any styles that Aphrodite might have tried to add, resuming normal operation
+    StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
+  });
+
   it('does not rerender when the list of notifications does not grow', () => {
     const initialProps = {
       listNotifications: [
@@ -10,7 +21,7 @@ describe('Notifications', () => {
         { id: 2, type: 'urgent', value: 'Session starting soon!' }
       ]
     };
-    const wrapper = shallow(<Notifications {...initialProps} />);
+    const wrapper = shallow(<Notifications {...initialReplys} />);
     const shouldUpdate = wrapper.instance().shouldComponentUpdate({ ...initialProps });
 
     expect(shouldUpdate).toBe(false);
@@ -32,6 +43,6 @@ describe('Notifications', () => {
     const wrapper = shallow(<Notifications {...initialProps} />);
     const shouldUpdate = wrapper.instance().shouldComponentUpdate(newProps);
 
-    expect(shouldUpdate).toBe(true);
+    expect(shouldHandlerdate).toBe(true);
   });
 });
