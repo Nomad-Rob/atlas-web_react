@@ -1,8 +1,19 @@
 import React from 'react';
 import { render } from '@testing-library/react';
+import { StyleSheetTestUtils } from 'aphrodite';
 import CourseList from './CourseList';
 
 describe('CourseList', () => {
+  beforeEach(() => {
+    // Suppress style injection before each test
+    StyleSheetTestUtils.suppressStyleInjection();
+  });
+
+  afterEach(() => {
+    // Clear any styles that Aphrodite might have tried to add
+    StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
+  });
+
   it('renders correctly with no courses', () => {
     const { getByText } = render(<CourseList />);
     expect(getByText('No course available yet')).toBeInTheDocument();

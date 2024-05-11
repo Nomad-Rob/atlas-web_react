@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
   app: {
     textAlign: 'center',
   },
-  appHeader: {
+  appHeaderWrapper: {
     backgroundColor: '#ffffff',
     minHeight: '150px',
     display: 'flex',
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     fontSize: 'calc(10px + 2vmin)',
     color: 'rgb(247, 4, 4)',
   },
-  appBody: {
+  appMenuNotifications: {
     margin: '40px',
   },
   appFooter: {
@@ -32,7 +32,6 @@ const styles = StyleSheet.create({
     padding: '10px',
   },
 });
-
 
 class App extends Component {
   constructor(props) {
@@ -63,7 +62,7 @@ class App extends Component {
 
   handleKeyPress(event) {
     if (event.ctrlKey && event.key === 'h') {
-      event.preventDefault();  // Prevent the default action of the keypress
+      event.preventDefault();
       alert('Logging you out');
       this.props.logOut();
     }
@@ -72,24 +71,23 @@ class App extends Component {
   render() {
     const { isLoggedIn } = this.props;
     const { listCourses, listNotifications } = this.state;
-    const contentTitle = isLoggedIn ? "Available Courses" : "Please Log In";
 
     return (
       <>
-        <div className="App-header-wrapper">
+        <div className={css(styles.appHeaderWrapper)}>
           <Header />
-          <div className="App-menu-notifications">
+          <div className={css(styles.appMenuNotifications)}>
             <Notifications listNotifications={listNotifications} />
           </div>
         </div>
-        <div className="App">
+        <div className={css(styles.app)}>
           <BodySectionWithMarginBottom title={isLoggedIn ? "Course list" : "Log in to continue"}>
             {isLoggedIn ? <CourseList listCourses={listCourses} /> : <Login />}
           </BodySectionWithMarginBottom>
           <BodySection title="News from the School">
             <p>This is the latest news from our school community made by Rob!</p>
           </BodySection>
-          <Footer />
+          <Footer className={css(styles.appFooter)} />
         </div>
       </>
     );
