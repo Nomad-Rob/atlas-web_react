@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-// Define styles as constants
+// Define styles as constants 
 const rowStyle = { backgroundColor: '#f5f5f5ab' };
 const headerRowStyle = { backgroundColor: '#deb5b545' };
 
