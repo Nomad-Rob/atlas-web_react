@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 const rowStyle = { backgroundColor: '#f5f5f5ab' };
 const headerRowStyle = { backgroundColor: '#deb5b545' };
 
-function CourseListRow({ isHeader, textFirstCell, textSecondControl }) {
+function CourseListRow({ isHeader, textFirstCell, textSecondCell }) {  // Corrected parameter name here
   if (isHeader) {
     if (textSecondCell === null) {
       return (
@@ -40,7 +40,7 @@ CourseListRow.propTypes = {
   ])
 };
 
-CourseListQRow.defaultProps = {
+CourseListRow.defaultProps = {
   isHeader: false,
   textSecondCell: null
 };
