@@ -1,9 +1,35 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import NotificationItem from './NotificationItem';
 import { StyleSheet, css } from 'aphrodite';
+import NotificationItem from './NotificationItem';
 
+// Define keyframes for the animations using Aphrodite
+const fadeIn = {
+  from: { opacity: 0.5 },
+  to: { opacity: 1 },
+};
+
+const bounce = {
+  '0%': { transform: 'translateY(0px)' },
+  '50%': { transform: 'translateY(-5px)' },
+  '100%': { transform: 'translateY(5px)' },
+};
+
+// Define styles using Aphrodite
 const styles = StyleSheet.create({
+  menuItem: {
+    position: 'fixed',
+    right: 0,
+    top: 0,
+    backgroundColor: '#fff8f8',
+    cursor: 'pointer',
+    ':hover': {
+      animationName: [fadeIn, bounce],
+      animationDuration: '1s, 0.5s',
+      animationIterationCount: '3, 3',
+      animationTimingFunction: 'ease, ease-in-out',
+    },
+  },
   notifications: {
     display: 'flex',
     justifyContent: 'space-between',
@@ -52,8 +78,6 @@ const styles = StyleSheet.create({
   },
 });
 
-
-
 class Notifications extends Component {
   shouldComponentUpdate(nextProps) {
     // Only update if new list is longer than the current list
@@ -61,20 +85,24 @@ class Notifications extends Component {
   }
 
   render() {
+    const { listNotifications, markAsRead } = this.props;
+
     return (
-      <div className='Notifications'>
-        <ul>
-          {this.props.listNotifications.map(notification => (
-            <NotificationItem
-              key={notification.id}
-              id={notification.id}
-              type={notification.type}
-              value={notification.value}
-              html={notification.html}
-              markAsRead={this.props.markAsRead}
-            />
-          ))}
-        </ul>
+      <div className={css(styles.menuItem)} style={{ display: listNotifications.length ? 'none' : 'block' }}>
+        <div className="Notifications">
+          <ul className={css(styles.notificationsContentUl)}>
+            {listNotifications.map(notification => (
+              <NotificationItem
+                key={notification.id}
+                id={notification.id}
+                type={notification.type}
+                value={notification.value}
+                html={notification.html}
+                markAsRead={markAsRead}
+              />
+            ))}
+          </ul>
+        </div>
       </div>
     );
   }
