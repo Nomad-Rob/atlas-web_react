@@ -1,13 +1,13 @@
-import React, { Component } from "react";
-import Notifications from "../Notifications/Notifications";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { StyleSheet, css } from 'aphrodite';
+import Notifications from '../Notifications/Notifications';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import Login from '../Login/Login';
-import CourseList from "../CourseList/CourseList";
-import BodySectionWithMarginBottom from "../BodySection/BodySectionWithMarginBottom";
-import BodySection from "../BodySection/BodyBodySection";
-import PropTypes from 'prop-types';
-import { StyleSheet, css } from 'aphrodite';
+import CourseList from '../CourseList/CourseList';
+import BodySectionWithMarginBottom from '../BodySection/BodySectionWithMarginBottom';
+import BodySection from '../BodySection/BodySection';
 
 const styles = StyleSheet.create({
   body: {
@@ -43,6 +43,7 @@ const styles = StyleSheet.create({
 class App extends Component {
   constructor(props) {
     super(props);
+    // State initialization
     this.state = {
       displayDrawer: false,
       listCourses: [
@@ -57,26 +58,28 @@ class App extends Component {
       ],
     };
 
+    // Proper binding of methods
     this.handleDisplayDrawer = this.handleDisplayDrawer.bind(this);
     this.handleHideDrawer = this.handleHideDrawer.bind(this);
   }
 
-  handleDisplayDrawer = () => {
+  handleDisplayDrawer() {
     this.setState({ displayDrawer: true });
   }
 
-  handleHideDrawer = () => {
+  handleHideDrawer() {
     this.setState({ displayDrawer: false });
   }
 
   componentDidMount() {
     this.handleKeyDown = (event) => {
-      if(event.ctrlKey && event.key === 'h') {
+      if (event.ctrlKey && event.key === 'h') {
         event.preventDefault();
         alert('Logging you out');
         this.props.logOut();
       }
     };
+
     window.addEventListener('keydown', this.handleKeyDown);
   }
 
@@ -94,10 +97,11 @@ class App extends Component {
           <Header />
           <div className={css(styles.headerNotifications)}>
             <Notifications
-            listNotifications={listNotifications}
-            displayDrawer={displayDrawer}
-            handleDisplayDrawer={this.handleDisplayDrawer}
-            handleHideDrawer={this.handleHideDrawer} />
+              listNotifications={listNotifications}
+              displayDrawer={displayDrawer}
+              handleDisplayDrawer={this.handleDisplayDrawer}
+              handleHideDrawer={this.handleHideClone}
+            />
           </div>
         </div>
         <div className={css(styles.body)}>
