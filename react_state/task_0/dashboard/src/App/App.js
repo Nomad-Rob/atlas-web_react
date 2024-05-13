@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import Notifications from '../Notifications/Notifications';
+import React, { Component } from "react";
+import Notifications from "../Notifications/Notifications";
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import Login from '../Login/Login';
-import CourseList from '../CourseList/CourseList';
-import BodySectionWithMarginBottom from '../BodySection/BodySectionWithMarginBottom';
-import BodySection from '../BodySection/BodySection';
+import CourseList from "../CourseList/CourseList";
+import BodySectionWithMarginBottom from "../BodySection/BodySectionWithMarginBottom";
+import BodySection from "../BodySection/BodyBodySection";
 import PropTypes from 'prop-types';
 import { StyleSheet, css } from 'aphrodite';
 
@@ -54,12 +54,10 @@ class App extends Component {
         { id: 2, type: 'urgent', value: 'New resume available' },
         { id: 3, type: 'urgent', html: { __html: '<strong>Urgent requirement</strong> - complete by EOD' } },
       ],
-      displayDrawer: false
+      displayDrawer: false, // Added this state
     };
-
-    // Binding functions
     this.handleDisplayDrawer = this.handleDisplayDrawer.bind(this);
-    this.handleHideDrawer = this.handleHideIdrawer.bind(this);
+    this.handleHideDrawer = this.handleHideDrawer.bind(this);
   }
 
   handleDisplayDrawer() {
@@ -111,7 +109,9 @@ class App extends Component {
             <p>This is the latest news from our school community made by Rob!</p>
           </BodySection>
         </div>
-        <Footer />
+        <div>
+          <Footer />
+        </div>
       </>
     );
   }

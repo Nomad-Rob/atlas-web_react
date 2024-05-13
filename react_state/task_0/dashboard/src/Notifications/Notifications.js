@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     fontSize: '0.8rem',
     color: 'red',
     '@media (max-width: 900px)': {
-      fontSize: '20px', // Larger font size on small screens
+    fontSize: '20px', // Larger font size on small screens
     },
   },
   thirdChild: {
@@ -72,55 +72,38 @@ const styles = StyleSheet.create({
     fontWeight: 400,
     fontSize: '0.9rem',
     color: 'red',
-    '@.media (max-width: 900px)': {
+    '@media (max-width: 900px)': {
       fontSize: '20px', // Larger font size on small screens
     },
   },
 });
 
 class Notifications extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      displayDrawer: false
-    };
-  }
-
-  handleDisplayDrawer = () => {
-    this.setState({ displayDrawer: true });
-  }
-
-  handleHideDrawer = () => {
-    this.setState({ displayDrawer: false });
+  shouldComponentUpdate(nextProps) {
+    // Allow rerender for displayDrawer state changes or if the notification list grows
+    return nextProps.displayDrawer !== this.props.displayDrawer || nextProps.listNotifications.length > this.props.listNotifications.length;
   }
 
   render() {
-    const { listNotifications } = this.props;
-    const { displayDrawer } = this.state;
-    
+    const { listNotifications, markAsRead, handleDisplayDrawer, handleHideDrawer, displayDrawer } = this.props;
+
     return (
-      <div className={css(styles.menuItem)}>
-        <div onClick={this.handleDisplayDrawer} style={{ cursor: 'pointer' }}>
-          Your notifications
+      <div className={css(styles.menuItem)} onClick={handleDisplayDrawer} style={{ display: 'block' }}>
+        <div className="Notifications" style={{ display: displayDrawer ? 'block' : 'none' }}>
+          <button onClick={handleHideDrawer}>Close</button>
+          <ul className={css(styles.notificationsContentUl)}>
+            {listNotifications.map(notification => (
+              <NotificationItem
+                key={notification.id}
+                id={notification.id}
+                type={notification.type}
+                value={notification.value}
+                html={notification.html}
+                markAsRead={markAsRead}
+              />
+            ))}
+          </ul>
         </div>
-        {displayDrawer && (
-          <div className="Notifications">
-            <button onClick={this.handleHideDrawer} aria-label="Close" style={{ cursor: 'pointer' }}>
-              Close
-            </button>
-            <ul className={css(styles.notificationsContentUl)}>
-              {listNotifications.map(notification => (
-                <NotificationItem
-                  key={notification.id}
-                  id={notification.id}
-                  type={notification.type}
-                  value={notification.value}
-                  html={notification.html}
-                />
-              ))}
-            </ul>
-          </div>
-        )}
       </div>
     );
   }
@@ -133,14 +116,20 @@ Notifications.propTypes = {
     value: PropTypes.string,
     html: PropTypes.shape({
       __html: PropTypes.string
-    })
+    }),
+    markAsRead: PropTypes.func
   })),
   displayDrawer: PropTypes.bool,
+  handleDisplayDrawer: PropTypes.func,
+  handleHideDrawer: PropTypes.pageXhide,
 };
 
 Notifications.defaultProps = {
   listNotifications: [],
-  displayDrawer: false
+  displayDrawer: false,
+  handleDisplayDrawer: () => {},
+  handleHideDrawer: () => {},
+  markAsRead: () => {}
 };
 
 export default Notifications;
