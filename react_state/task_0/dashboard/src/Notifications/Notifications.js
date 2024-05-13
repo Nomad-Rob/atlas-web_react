@@ -110,25 +110,15 @@ class Notifications extends Component {
 }
 
 Notifications.propTypes = {
-  listNotifications: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    type: PropTypes.string,
-    value: PropTypes.string,
-    html: PropTypes.shape({
-      __html: PropTypes.string
-    }),
-    markAsRead: PropTypes.func
-  })),
   displayDrawer: PropTypes.bool,
+  listNotifications: PropTypes.arrayOf(NotificationItemShape),
   handleDisplayDrawer: PropTypes.func,
-  handleHideSpy: PropTypes.func,
-  markAsRead: PropTypes.func
+  handleHideDrawer: PropTypes.func,
 };
 
 Notifications.defaultProps = {
-  listNotifications: [],
   displayDrawer: false,
+  listNotifications: [],
   handleDisplayDrawer: () => {},
   handleHideDrawer: () => {},
-  markAsRead: () => {}
 };
