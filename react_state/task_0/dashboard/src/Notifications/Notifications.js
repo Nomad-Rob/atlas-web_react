@@ -121,7 +121,8 @@ Notifications.propTypes = {
   })),
   displayDrawer: PropTypes.bool,
   handleDisplayDrawer: PropTypes.func,
-  handleHideDrawer: PropTypes.pageXhide,
+  handleHideSpy: PropTypes.func,
+  markAsRead: PropTypes.func
 };
 
 Notifications.defaultProps = {
@@ -131,5 +132,3 @@ Notifications.defaultProps = {
   handleHideDrawer: () => {},
   markAsRead: () => {}
 };
-
-export default Notifications;
