@@ -72,37 +72,55 @@ const styles = StyleSheet.create({
     fontWeight: 400,
     fontSize: '0.9rem',
     color: 'red',
-    '@media (max-width: 900px)': {
+    '@.media (max-width: 900px)': {
       fontSize: '20px', // Larger font size on small screens
     },
   },
 });
 
 class Notifications extends Component {
-  shouldComponentUpdate(nextProps) {
-    // Only update if new list is longer than the current list
-    return nextProps.listNotifications.length > this.props.listNotifications.length;
+  constructor(props) {
+    super(props);
+    this.state = {
+      displayDrawer: false
+    };
+  }
+
+  handleDisplayDrawer = () => {
+    this.setState({ displayDrawer: true });
+  }
+
+  handleHideDrawer = () => {
+    this.setState({ displayDrawer: false });
   }
 
   render() {
-    const { listNotifications, markAsRead } = this.props;
-
+    const { listNotifications } = this.props;
+    const { displayDrawer } = this.state;
+    
     return (
-      <div className={css(styles.menuItem)} style={{ display: listNotifications.length ? 'none' : 'block' }}>
-        <div className="Notifications">
-          <ul className={css(styles.notificationsContentUl)}>
-            {listNotifications.map(notification => (
-              <NotificationItem
-                key={notification.id}
-                id={notification.id}
-                type={notification.type}
-                value={notification.value}
-                html={notification.html}
-                markAsRead={markAsRead}
-              />
-            ))}
-          </ul>
+      <div className={css(styles.menuItem)}>
+        <div onClick={this.handleDisplayDrawer} style={{ cursor: 'pointer' }}>
+          Your notifications
         </div>
+        {displayDrawer && (
+          <div className="Notifications">
+            <button onClick={this.handleHideDrawer} aria-label="Close" style={{ cursor: 'pointer' }}>
+              Close
+            </button>
+            <ul className={css(styles.notificationsContentUl)}>
+              {listNotifications.map(notification => (
+                <NotificationItem
+                  key={notification.id}
+                  id={notification.id}
+                  type={notification.type}
+                  value={notification.value}
+                  html={notification.html}
+                />
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
     );
   }
@@ -115,15 +133,14 @@ Notifications.propTypes = {
     value: PropTypes.string,
     html: PropTypes.shape({
       __html: PropTypes.string
-    }),
-    markAsRead: PropTypes.func
+    })
   })),
-  markAsRead: PropTypes.func
+  displayDrawer: PropTypes.bool,
 };
 
 Notifications.defaultProps = {
   listNotifications: [],
-  markAsRead: () => {}
+  displayDrawer: false
 };
 
 export default Notifications;

@@ -1,20 +1,18 @@
-import React, { Component } from "react";
-import Notifications from "../Notifications/Notifications";
+import React, { Component } from 'react';
+import Notifications from '../Notifications/Notifications';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import Login from '../Login/Login';
-import CourseList from "../CourseList/CourseList";
-import BodySectionWithMarginBottom from "../BodySection/BodySectionWithMarginBottom";
-import BodySection from "../BodySection/BodySection";
+import CourseList from '../CourseList/CourseList';
+import BodySectionWithMarginBottom from '../BodySection/BodySectionWithMarginBottom';
+import BodySection from '../BodySection/BodySection';
 import PropTypes from 'prop-types';
 import { StyleSheet, css } from 'aphrodite';
 
 const styles = StyleSheet.create({
-
   body: {
     textAlign: 'center',
   },
-
   headerWrapper: {
     display: 'flex',
     justifyContent: 'space-between',
@@ -22,14 +20,12 @@ const styles = StyleSheet.create({
     borderBottom: '5px solid #00005C',
     width: '100%',
   },
-
   headerNotifications: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-end',
     justifyContent: 'flex-end',
   },
-
   footer: {
     fontFamily: "'Galano Grotesque Alt', sans-serif",
     fontStyle: 'italic',
@@ -42,7 +38,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: '0',
   }
-})
+});
 
 class App extends Component {
   constructor(props) {
@@ -58,7 +54,20 @@ class App extends Component {
         { id: 2, type: 'urgent', value: 'New resume available' },
         { id: 3, type: 'urgent', html: { __html: '<strong>Urgent requirement</strong> - complete by EOD' } },
       ],
+      displayDrawer: false
     };
+
+    // Binding functions
+    this.handleDisplayDrawer = this.handleDisplayDrawer.bind(this);
+    this.handleHideDrawer = this.handleHideIdrawer.bind(this);
+  }
+
+  handleDisplayDrawer() {
+    this.setState({ displayDrawer: true });
+  }
+
+  handleHideDrawer() {
+    this.setState({ displayDrawer: false });
   }
 
   componentDidMount() {
@@ -69,7 +78,6 @@ class App extends Component {
         this.props.logOut();
       }
     };
-
     window.addEventListener('keydown', this.handleKeyDown);
   }
 
@@ -77,16 +85,16 @@ class App extends Component {
     window.removeEventListener('keydown', this.handleKeyDown);
   }
 
-  render () {
+  render() {
     const { isLoggedIn } = this.props;
-    const { listCourses, listNotifications } = this.state;
+    const { listCourses, listNotifications, displayDrawer } = this.state;
 
     return (
       <>
         <div className={css(styles.headerWrapper)}>
           <Header />
           <div className={css(styles.headerNotifications)}>
-            <Notifications listNotifications={listNotifications} />
+            <Notifications listNotifications={listNotifications} displayDrawer={displayDrawer} handleDisplayDrawer={this.handleDisplayDrawer} handleHideDrawer={this.handleHideDrawer} />
           </div>
         </div>
         <div className={css(styles.body)}>
@@ -100,12 +108,10 @@ class App extends Component {
             </BodySectionWithMarginBottom>
           )}
           <BodySection title='News from the School'>
-          <p>This is the latest news from our school community made by Rob!</p>
+            <p>This is the latest news from our school community made by Rob!</p>
           </BodySection>
         </div>
-        <div>
-          <Footer footerClassName={css(styles.footer)} />
-        </div>
+        <Footer />
       </>
     );
   }
