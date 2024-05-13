@@ -43,7 +43,6 @@ const styles = StyleSheet.create({
 class App extends Component {
   constructor(props) {
     super(props);
-    // State initialization
     this.state = {
       displayDrawer: false,
       listCourses: [
@@ -58,22 +57,21 @@ class App extends Component {
       ],
     };
 
-    // Proper binding of methods
     this.handleDisplayDrawer = this.handleDisplayDrawer.bind(this);
     this.handleHideDrawer = this.handleHideDrawer.bind(this);
   }
 
-  handleDisplayDrawer() {
+  handleDisplayDrawer = () => {
     this.setState({ displayDrawer: true });
   }
 
-  handleHideDrawer() {
+  handleHideDrawer = () => {
     this.setState({ displayDrawer: false });
   }
 
   componentDidMount() {
     this.handleKeyDown = (event) => {
-      if (event.ctrlKey && event.key === 'h') {
+      if(event.ctrlKey && event.key === 'h') {
         event.preventDefault();
         alert('Logging you out');
         this.props.logOut();
@@ -87,9 +85,9 @@ class App extends Component {
     window.removeEventListener('keydown', this.handleKeyDown);
   }
 
-  render() {
+  render () {
     const { isLoggedIn } = this.props;
-    const { listCourses, listNotifications, displayDrawer } = this.state;
+    const { displayDrawer, listCourses, listNotifications } = this.state;
 
     return (
       <>
@@ -97,11 +95,10 @@ class App extends Component {
           <Header />
           <div className={css(styles.headerNotifications)}>
             <Notifications
-              listNotifications={listNotifications}
-              displayDrawer={displayDrawer}
-              handleDisplayDrawer={this.handleDisplayDrawer}
-              handleHideDrawer={this.handleHideClone}
-            />
+            listNotifications={listNotifications}
+            displayDrawer={displayDrawer}
+            handleDisplayDrawer={this.handleDisplayDrawer}
+            handleHideDrawer={this.handleHideDrawer} />
           </div>
         </div>
         <div className={css(styles.body)}>
@@ -114,12 +111,14 @@ class App extends Component {
               <Login />
             </BodySectionWithMarginBottom>
           )}
-          <BodySection title='News from the School'>
+          <div className={css(styles.newsMargin)}>
+            <BodySection title='News from the School'>
             <p>This is the latest news from our school community made by Rob!</p>
-          </BodySection>
+            </BodySection>
+          </div>
         </div>
         <div>
-          <Footer />
+          <Footer footerClassName={css(styles.footer)} />
         </div>
       </>
     );
