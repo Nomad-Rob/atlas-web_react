@@ -61,11 +61,11 @@ class App extends Component {
     this.handleHideDrawer = this.handleHideDrawer.bind(this);
   }
 
-  handleDisplayDrawer() {
+  handleDisplayDrawer = () => {
     this.setState({ displayDrawer: true });
   }
 
-  handleHideDrawer() {
+  handleHideDrawer = () => {
     this.setState({ displayDrawer: false });
   }
 
