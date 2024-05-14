@@ -57,10 +57,11 @@ class App extends Component {
       ],
     };
 
+    // Bind the functions to 'this' context
     this.handleDisplayDrawer = this.handleDisplayDrawer.bind(this);
     this.handleHideDrawer = this.handleHideDrawer.bind(this);
   }
-
+  
   handleDisplayDrawer = () => {
     this.setState({ displayDrawer: true });
   }
@@ -85,7 +86,7 @@ class App extends Component {
     window.removeEventListener('keydown', this.handleKeyDown);
   }
 
-  render () {
+  render() {
     const { isLoggedIn } = this.props;
     const { displayDrawer, listCourses, listNotifications } = this.state;
 
@@ -95,10 +96,11 @@ class App extends Component {
           <Header />
           <div className={css(styles.headerNotifications)}>
             <Notifications
-            listNotifications={listNotifications}
-            displayDrawer={displayDrawer}
-            handleDisplayDrawer={this.handleDisplayDrawer}
-            handleHideDrawer={this.handleHideDrawer} />
+              listNotifications={listTokens.notifications}
+              displayDrawer={displayDrawer}
+              handleDisplayDrawer={this.handleDisplayDrawer}
+              handleHideDrawer={this.handleHideDrawer}
+            />
           </div>
         </div>
         <div className={css(styles.body)}>
