@@ -1,35 +1,54 @@
-import { login, logout, displayNotificationDrawer, hideNotificationDrawer } from './uiActionCreators';
-import { LOGIN, LOGOUT, DISPLAY_NOTIFICATION_DRAWER, HIDE_NOTIFICATION_DRAWER } from './uiActionTypes';
+import configureMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
+import fetchMock from 'fetch-mock';
+import { loginRequest } from './uiActionCreators';
+import { LOGIN, LOGIN_SUCCESS, LOGIN_FAILURE } from './uiActionTypes';
 
-describe('UI Action Creators', () => {
-  it('login should create an action to log in', () => {
-    const email = "example@example.com";
-    const password = "123456";
-    const expectedAction = {
-      type: LOGIN,
-      user: { email, password }
-    };
-    expect(login(email, password)).toEqual(expectedState);
+const middlewares = [thunk];
+const mockStore = configureMockStore(middlewares);
+
+describe('async loginRequest action', () => {
+  afterEach(() => {
+    fetchMock.restore();
   });
 
-  it('logout should create an action to log out', () => {
-    const expectedAction = {
-      type: LOGOUT
-    };
-    expect(logout()).toEqual(expectedState);
+  it('dispatches LOGIN and LOGIN_SUCCESS when the login API succeeds', () => {
+    fetchMock.getOnce('/login-success.json', {
+      body: { user: { id: 1, name: 'John Doe' } },
+      headers: { 'content-type': 'application/json' }
+    });
+
+    const expectedActions = [
+      { type: LOGIN, user: { email: 'user@example.com', password: 'password123' }},
+      { type: LOGIN_SUCCESS, userData: { user: { id: 1, name: 'John Doe' }}}
+    ];
+
+    const store = mockStore({});
+
+    return store.dispatch(loginRequest('user@example.com', 'password123'))
+      .then(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+      });
   });
 
-  it('displayNotificationDrawer should create an action to display the notification drawer', () => {
-    const expectedAction = {
-      type: DISPLAY_NOTIFICATION_DRAWER
-    };
-    expect(displayNotificationDrawer()).toEqual(expectedState);
-  });
+  it('dispatches LOGIN and LOGIN_FAILURE when the login API fails', () => {
+    fetchMock.getOnce('/login-success.json', {
+      throws: new Error('API failure')
+    });
 
-  it('hideNotificationDrawer should create an action to hide the notification drawer', () => {
-    const expectedAction = {
-      type: HIDE_NOTIFICATION_DRAWER
-    };
-    expect(hideNotificationDrawer()).toEqual(expectedState);
+    const expectedActions = [
+      { type: LOGIN, user: { email: 'user@example.com', password: 'password123' }},
+      { type: LOGIN_FAILURE, error: new Error('API failure')}
+    ];
+
+    const store = mockStore({});
+
+    return store.dispatch(loginRequest('user@example.com', 'password123'))
+      .then(() => {
+        const actions = store.getActions();
+        expect(actions[0]).toEqual(expectedActions[0]);
+        expect(actions[1].type).toEqual(LOGIN_FAILURE);
+        expect(actions[1].error).toEqual(expect.any(Error));
+      });
   });
 });
