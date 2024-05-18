@@ -3,6 +3,8 @@
 
 </h2>
 
+#TODO Need to add more resources that I have saved
+
 Read or watch:
 * [Normalizr](https://github.com/paularmstrong/normalizr)
 * [Normalizing State Shape](https://redux.js.org/usage/structuring-reducers/normalizing-state-shape)
