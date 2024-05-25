@@ -35,42 +35,6 @@ describe('App', () => {
     expect(wrapper.find(Login).exists()).toBe(true);
   });
 
-  test('initial state for "user" and "displayDrawer"', () => {
-    const wrapper = shallow(<App />);
-    expect(wrapper.state('user').isLoggedIn).toBe(false);
-    expect(wrapper.state('displayDrawer')).toBe(false);
-  });
-
-  test('logIn function updates the state correctly', () => {
-    const wrapper = shallow(<App />);
-    wrapper.instance().logIn('test@example.com', 'password123');
-    expect(wrapper.state('user').isLoggedIn).toBe(true);
-    expect(wrapper.state('user').email).toBe('test@example.com');
-  });
-
-  test('logOut function updates the state correctly', () => {
-    const wrapper = shallow(<App />);
-    wrapper.instance().logIn('test@example.com', 'password123'); // First log in
-    wrapper.instance().logOut();
-    expect(wrapper.state('user').isLoggedIn).toBe(false);
-    expect(wrapper.state('user').email).toBe('');
-  });
-
-  test('markNotificationAsRead removes the notification with the given id', () => {
-    const wrapper = shallow(<App />);
-    wrapper.setState({
-      listNotifications: [
-        { id: 1, type: 'default', value: 'New course available' },
-        { id: 2, type: 'urgent', value: 'New resume available' },
-        { id: 3, type: 'urgent', html: { __html: '<strong>Urgent requirement</strong> - complete by EOD' } }
-      ]
-    });
-    expect(wrapper.state('listNotifications').length).toBe(3);
-    wrapper.instance().markNotificationAsRead(2);
-    expect(wrapper.state('listNotifications').length).toBe(2);
-    expect(wrapper.state('listNotifications').find(n => n.id === 2)).toBeUndefined();
-  });
-
   test('Login and logout update the UI accordingly', () => {
     const wrapper = mount(
       <AppContext.Provider value={{ user: { isLoggedIn: false }, logOut: jest.fn() }}>
@@ -93,14 +57,17 @@ describe('App', () => {
     expect(wrapper.find(Login).exists()).toBe(true);
   });
 
-  // New test for mapStateToProps
   describe('mapStateToProps', () => {
     it('should map the state correctly', () => {
       const mockState = fromJS({
-        isUserLoggedIn: true
+        ui: {
+          isUserLoggedIn: true,
+          isNotificationDrawerVisible: true
+        }
       });
       const state = mapStateToProps(mockState);
       expect(state.isLoggedIn).toBe(true);
+      expect(state.displayDrawer).toBe(true);
     });
   });
 });
