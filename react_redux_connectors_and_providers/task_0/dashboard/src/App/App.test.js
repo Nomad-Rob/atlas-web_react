@@ -2,13 +2,14 @@ import React from 'react';
 import { shallow, configure, mount } from 'enzyme';
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import { StyleSheetTestUtils } from 'aphrodite';
-import App from './App';
+import App, { mapStateToProps } from './App';
 import Notifications from './Notifications/Notifications';
 import Header from './Header/Header';
 import Footer from './Footer/Footer';
 import Login from './Login/Login';
 import CourseList from './CourseList/CourseList';
 import AppContext from './App/AppContext';
+import { fromJS } from 'immutable';
 
 configure({ adapter: new Adapter() });
 
@@ -90,5 +91,16 @@ describe('App', () => {
     wrapper.update();
     expect(wrapper.find(CourseList).exists()).toBe(false);
     expect(wrapper.find(Login).exists()).toBe(true);
+  });
+
+  // New test for mapStateToProps
+  describe('mapStateToProps', () => {
+    it('should map the state correctly', () => {
+      const mockState = fromJS({
+        isUserLoggedIn: true
+      });
+      const state = mapStateToProps(mockState);
+      expect(state.isLoggedIn).toBe(true);
+    });
   });
 });
