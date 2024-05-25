@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import logo from '../assets/holberton-logo.jpg';
 import { StyleSheet, css } from 'aphrodite';
-import AppContext from '../App/AppContext'; // Adjust the import path as necessary
+import AppContext from '../App/AppContext';
 
 const styles = StyleSheet.create({
   appHeader: {

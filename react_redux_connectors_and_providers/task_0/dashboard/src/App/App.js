@@ -54,11 +54,22 @@ const listNotifications = [
   { id: 3, type: 'urgent', html: { __html: '<strong>Urgent requirement</strong> - complete by EOD' } },
 ];
 
+const mapStateToProps = state => {
+  return {
+    isLoggedIn: state.ui.isUserLoggedIn
+  };
+};
+
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       displayDrawer: false,
+      user: {
+        email: '',
+        password: '',
+        isLoggedIn: false
+      },
       listNotifications: [
         { id: 1, type: 'default', value: 'New course available' },
         { id: 2, type: 'urgent', value: 'New resume available' },
@@ -117,10 +128,10 @@ class App extends Component {
   };
 
   render() {
-    const { user, listNotifications } = this.props;
+    const { isLoggedIn, listNotifications } = this.props; // Ensure proper destructuring from props
 
     return (
-      <AppContext.Provider value={{ user, logOut: this.logOut }}>
+      <AppContext.Provider value={{ user: this.state.user, logOut: this.logOut }}>
         <div className={css(styles.headerWrapper)}>
           <Header />
           <div className={css(styles.headerNotifications)}>
@@ -134,7 +145,7 @@ class App extends Component {
           </div>
         </div>
         <div className={css(styles.body)}>
-          {user.isLoggedIn ? (
+          {isLoggedIn ? (
             <BodySectionWithMarginBottom title='Course List'>
               <CourseList listCourses={listCourses} />
             </BodySectionWithMarginBottom>
@@ -143,23 +154,16 @@ class App extends Component {
               <Login logIn={this.logIn} />
             </BodySectionWithMarginBottom>
           )}
-          <div className={css(styles.newsMargin)}>
+          <div>
             <BodySection title='News from the School'>
               <p>This is the latest news from our school community made by Rob!</p>
             </BodySection>
           </div>
         </div>
-        <div>
-          <Footer />
-        </div>
+        <Footer />
       </AppContext.Provider>
     );
   }
 }
-
-const mapStateToProps = (state) => ({
-  isUserLoggedIn: state.get('isUserLoggedIn'),
-  user: state.get('user')
-});
 
 export default connect(mapStateToProps)(App);
