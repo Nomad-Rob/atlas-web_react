@@ -43,12 +43,10 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapStateToProps = state => {
-  return {
-      isLoggedIn: state.ui.isUserLoggedIn,
-      displayDrawer: state.ui.isNotificationDrawerVisible
-  };
-};
+const mapStateToProps = state => ({
+  isLoggedIn: state.ui.isUserLoggedIn,
+  displayDrawer: state.ui.isNotificationDrawerVisible
+});
 
 const mapDispatchToProps = {
   displayNotificationDrawer,
@@ -124,8 +122,6 @@ class App extends Component {
                       <Notifications
                           listNotifications={listNotifications}
                           displayDrawer={displayDrawer}
-                          handleDisplayDrawer={displayNotificationDrawer}
-                          handleHideDrawer={hideNotificationDrawer}
                           markNotificationAsRead={this.markNotificationAsRead}
                       />
                   </div>
@@ -133,7 +129,7 @@ class App extends Component {
               <div className={css(styles.body)}>
                   {isLoggedIn ? (
                       <BodySectionWithMarginBottom title='Course List'>
-                          <CourseList listCourses={listCourses} />
+                          <CourseList listCourses={this.props.listCourses} />
                       </BodySectionWithMarginBottom>
                   ) : (
                       <BodySectionWithMarginBottom title='Log in to continue'>
@@ -151,5 +147,19 @@ class App extends Component {
       );
   }
 }
+
+App.propTypes = {
+  isLoggedIn: PropTypes.bool,
+  displayDrawer: PropTypes.bool,
+  listNotifications: PropTypes.array,
+  listCourses: PropTypes.array,
+};
+
+App.defaultProps = {
+  isLoggedIn: false,
+  displayDrawer: false,
+  listNotifications: [],
+  listCourses: [],
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
