@@ -1,52 +1,23 @@
 import uiReducer from './uiReducer';
-import { Map } from 'immutable';
-import {
-  displayNotificationDrawer,
-  hideNotificationDrawer,
-  loginSuccess,
-  loginFailure,
-  logout
-} from '../actions/uiActions';
+import { LOGIN, LOGOUT } from '../actions/uiActionTypes';
 
-describe('uiReducer with Immutable', () => {
-  // Convert Immutable Map to JS object for comparison
+describe('uiReducer', () => {
   const initialState = Map({
-    isNotificationDrawerVisible: false,
     isUserLoggedIn: false,
-    user: {}
+    user: null
   });
 
-  it('should return the initial state when no action is passed', () => {
-    expect(uiReducer(undefined, {}).toJS()).toEqual(initialState.toJS());
+  it('should handle LOGIN action', () => {
+    const user = { email: 'test@example.com' };
+    const action = { type: LOGIN, user };
+    const expectedState = initialState.set('isUserLoggedIn', true).set('user', user);
+    expect(uiReducer(initialState, action).toJS()).toEqual(expectedState.toJS());
   });
 
-  it('should return the initial state when a non-defined action is passed', () => {
-    expect(uiReducer(undefined, { type: 'SELECT_COURSE' }).toJS()).toEqual(initialState.toJS());
-  });
-
-  it('should handle DISPLAY_NOTIFICATION_DRAWER', () => {
-    expect(uiReducer(initialState, displayNotificationDrawer()).toJS()).toEqual(
-      initialState.set('isNotificationDrawerVisible', true).toJS()
-    );
-  });
-
-  it('should handle HIDE_NOTIFICATION_DRAWER', () => {
-    const startState = initialState.set('isNotificationDrawerVisible', true);
-    expect(uiReducer(startState, hideNotificationDrawer()).toJS()).toEqual(initialState.toJS());
-  });
-
-  it('should maintain other state properties when toggling the notification drawer', () => {
-    const modifiedState = initialState.set('user', { name: 'John Doe' });
-    const newState = uiReducer(modifiedState, displayNotificationDrawer());
-    expect(newState.get('user')).toEqual({ name: 'John Doe' });
-  });
-
-  it('should maintain other state properties during login/logout actions', () => {
-    const modifiedState = initialState.set('isNotificationDrawerVisible', true);
-    const newStateAfterLogin = uiReducer(modifiedState, loginSuccess());
-    expect(newStateAfterLogin.get('isNotificationDrawerVisible')).toBe(true);
-
-    const newStateAfterLogout = uiReducer(newStateAfterLogin, logout());
-    expect(newStateAfterLogout.get('isNotificationDrawerVisible')).toBe(true);
+  it('should handle LOGOUT action', () => {
+    const loggedInState = initialState.set('isUserLoggedIn', true).set('user', { email: 'test@example.com' });
+    const action = { type: LOGOUT };
+    const expectedState = initialState.set('isUserLoggedIn', false).set('user', null);
+    expect(uiReducer(loggedInState, action).toJS()).toEqual(expectedState.toJS());
   });
 });

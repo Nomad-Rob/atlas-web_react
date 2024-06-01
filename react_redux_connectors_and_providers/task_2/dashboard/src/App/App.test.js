@@ -1,73 +1,69 @@
 import React from 'react';
-import { shallow, configure, mount } from 'enzyme';
-import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
-import { StyleSheetTestUtils } from 'aphrodite';
-import App, { mapStateToProps } from './App';
+import { shallow } from 'enzyme';
+import { App } from './App';
 import Notifications from './Notifications/Notifications';
 import Header from './Header/Header';
 import Footer from './Footer/Footer';
 import Login from './Login/Login';
 import CourseList from './CourseList/CourseList';
-import AppContext from './App/AppContext';
-import { fromJS } from 'immutable';
+import { StyleSheetTestUtils } from 'aphrodite';
 
-configure({ adapter: new Adapter() });
+// Setting up the initial props for the App component
+const defaultProps = {
+  isLoggedIn: false,
+  displayDrawer: false,
+  listCourses: [],
+  listNotifications: []
+};
 
 describe('App', () => {
-  beforeEach(() => {
+  let wrapper;
+
+  // Suppress Aphrodite style injection during tests to avoid unnecessary output and errors
+  beforeAll(() => {
     StyleSheetTestUtils.suppressStyleInjection();
   });
 
-  afterEach(() => {
+  afterAll(() => {
     StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
   });
 
-  test('App renders without crashing', () => {
-    const wrapper = shallow(<App />);
+  beforeEach(() => {
+    // Creating a shallow wrapper for App with default props
+    wrapper = shallow(<App {...defaultProps} />);
+  });
+
+  it('renders without crashing', () => {
     expect(wrapper.exists()).toBe(true);
   });
 
-  test('contains Notifications, Header, Footer, Login', () => {
-    const wrapper = shallow(<App />);
+  it('contains Notifications, Header, Footer, and initially Login component', () => {
     expect(wrapper.find(Notifications).exists()).toBe(true);
     expect(wrapper.find(Header).exists()).toBe(true);
     expect(wrapper.find(Footer).exists()).toBe(true);
     expect(wrapper.find(Login).exists()).toBe(true);
+    expect(wrapper.find(CourseList).exists()).toBe(false); // Should not exist when logged out
   });
 
-  test('Login and logout update the UI accordingly', () => {
-    const wrapper = mount(
-      <AppContext.Provider value={{ user: { isLoggedIn: false }, logOut: jest.fn() }}>
-        <App />
-      </AppContext.Provider>
-    );
-    expect(wrapper.find(Login).exists()).toBe(true);
-    expect(wrapper.find(CourseList).exists()).toBe(false);
-
-    // Simulating login
-    wrapper.setContext({ user: { isLoggedIn: true, email: 'test@example.com' }, logOut: jest.fn() });
-    wrapper.update();
-    expect(wrapper.find(CourseList).exists()).toBe(true);
+  it('renders CourseList instead of Login when isLoggedIn is true', () => {
+    // Update props to simulate user being logged in
+    wrapper.setProps({ isLoggedIn: true });
     expect(wrapper.find(Login).exists()).toBe(false);
-
-    // Simulating logout
-    wrapper.setContext({ user: { isLoggedIn: false }, logOut: jest.fn() });
-    wrapper.update();
-    expect(wrapper.find(CourseList).exists()).toBe(false);
-    expect(wrapper.find(Login).exists()).toBe(true);
+    expect(wrapper.find(CourseList).exists()).toBe(true);
   });
 
   describe('mapStateToProps', () => {
     it('should map the state correctly', () => {
-      const mockState = fromJS({
+      const mockState = {
         ui: {
           isUserLoggedIn: true,
           isNotificationDrawerVisible: true
         }
-      });
-      const state = mapStateToProps(mockState);
-      expect(state.isLoggedIn).toBe(true);
-      expect(state.displayDrawer).toBe(true);
+      };
+      const stateProps = mapStateToProps(mockState);
+      expect(stateProps.isLoggedIn).toBe(true);
+      expect(stateProps.displayDrawer).toBe(true);
     });
   });
 });
+
