@@ -10,7 +10,7 @@ import BodySectionWithMarginBottom from '../BodySection/BodySectionWithMarginBot
 import BodySection from '../BodySection/BodySection';
 import AppContext from './AppContext';
 import { connect } from 'react-redux';
-import { displayNotificationDrawer, hideNotificationDrawer } from '../actions/uiActionCreators';
+import { displayNotificationDrawer, hideNotificationDrawer, login } from '../actions/uiActionCreators';
 
 const styles = StyleSheet.create({
   body: {
@@ -50,7 +50,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   displayNotificationDrawer,
-  hideNotificationDrawer
+  hideNotificationDrawer,
+  login
 };
 
 class App extends Component {
@@ -107,7 +108,7 @@ class App extends Component {
   handleKeydown = (event) => {
       if (event.ctrlKey && event.key === 'h') {
           event.preventDefault();
-          this.logOut();
+          this.props.login();
       }
   };
 
