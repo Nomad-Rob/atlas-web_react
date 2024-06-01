@@ -8,9 +8,10 @@ import uiReducer from './reducers/uiReducer'; // Ensure the path to your reducer
 // Create a Redux store using Redux Toolkit
 const store = configureStore({
   reducer: {
-    ui: uiReducer // Assuming 'uiReducer' manages the UI-related state
+    ui: uiReducer
   },
-  // Middleware and DevTools extension are automatically set up by configureStore
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({ serializableCheck: false }),
 });
 
 // Root for the main app
@@ -22,3 +23,5 @@ root.render(
     </Provider>
   </React.StrictMode>
 );
+
+export default store;
