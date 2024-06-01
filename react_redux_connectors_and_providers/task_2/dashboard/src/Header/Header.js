@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import logo from '../assets/holberton-logo.jpg';
 import { StyleSheet, css } from 'aphrodite';
 import AppContext from '../App/AppContext';
+import { connect } from 'react-redux';
+import { logout } from '../actions/uiActionCreators';
 
 const styles = StyleSheet.create({
   appHeader: {
@@ -19,6 +20,19 @@ const styles = StyleSheet.create({
     cursor: 'pointer',
   }
 });
+
+const mapStateToProps = (state) => {
+
+  const uiReducer = state.ui;
+  const isLoggedIn = uiReducer.get('isUserLoggedIn');
+  const email = uiReducer.getIn(['user', 'email']);
+
+  return { user: { isLoggedIn, email } };
+};
+
+const mapDispatchToProps = {
+  logOut: logout,
+};
 
 class Header extends Component {
   static contextType = AppContext;
@@ -39,4 +53,4 @@ class Header extends Component {
   }
 }
 
-export default Header;
+export default connect(mapStateToProps, mapDispatchToProps)(Header);
