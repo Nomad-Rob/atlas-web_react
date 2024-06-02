@@ -55,6 +55,8 @@ describe('App', () => {
   describe('mapStateToProps', () => {
     it('should map the state correctly', () => {
       const mockState = {
+        courses: {},
+        notifications: {},
         ui: {
           isUserLoggedIn: true,
           isNotificationDrawerVisible: true
