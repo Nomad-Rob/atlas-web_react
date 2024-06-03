@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { StyleSheet, css } from 'aphrodite';
 import NotificationItem from './NotificationItem';
 import NotificationItemShape from './NotificationItemShape';
+import { connect } from 'react-redux';
+import { fetchNotifications } from '../actions/notificationActionCreators';
 
 // Define keyframes for the animations using Aphrodite
 const fadeIn = {
@@ -71,28 +73,32 @@ const styles = StyleSheet.create({
 });
 
 class Notifications extends PureComponent {
-  render() {
-    const { listNotifications, markNotificationAsRead, handleDisplayDrawer, handleHideDrawer, displayDrawer } = this.props;
+  componentDidMount() {
+      this.props.fetchNotifications();
+  }
 
-    return (
-      <div className={css(styles.menuItem)} onClick={handleDisplayDrawer} style={{ display: 'block' }}>
-        <div className="Notifications" style={{ display: displayDrawer ? 'block' : 'none' }}>
-          <button onClick={handleHideDrawer}>Close</button>
-          <ul className={css(styles.notificationsContentUl)}>
-            {listNotifications.map(notification => (
-              <NotificationItem
-                key={notification.id}
-                id={notification.id}
-                type={notification.type}
-                value={notification.value}
-                html={notification.html}
-                markAsRead={() => markNotificationAsRead(notification.id)}
-              />
-            ))}
-          </ul>
-        </div>
-      </div>
-    );
+  render() {
+      const { listNotifications, markNotificationAsRead, handleDisplayDrawer, handleHideDrawer, displayDrawer } = this.props;
+
+      return (
+          <div className={css(styles.menuItem)} onClick={handleDisplayDrawer} style={{ display: 'block' }}>
+              <div className="Notifications" style={{ display: displayDrawer ? 'block' : 'none' }}>
+                  <button onClick={handleHideDrawer}>Close</button>
+                  <ul className={css(styles.notificationsContentUl)}>
+                      {listNotifications.map(notification => (
+                          <NotificationItem
+                              key={notification.id}
+                              id={notification.id}
+                              type={notification.type}
+                              value={notification.value}
+                              html={notification.html}
+                              markAsRead={() => markNotificationAsRead(notification.id)}
+                          />
+                      ))}
+                  </ul>
+              </div>
+          </div>
+      );
   }
 }
 
@@ -112,4 +118,14 @@ Notifications.defaultProps = {
   markNotificationAsRead: () => {} // Provide a default no-op function
 };
 
-export default Notifications;
+const mapStateToProps = (state) => {
+  return {
+    listNotifications: state.notifications.get("messages"),
+  };
+};
+
+const mapDispatchToProps = {
+  fetchNotifications,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Notifications);

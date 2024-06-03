@@ -32,24 +32,13 @@ export function setNotifications(data) {
   };
 }
 
-// Thunk action creator for fetching notifications
-export function fetchNotifications() {
-  return function(dispatch) {
-    dispatch(setLoadingState(true)); // Set loading state to true before fetching data
-    return fetch('/notifications.json') // Specify the correct path to your notifications data
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
-      .then(data => {
-        dispatch(setNotifications(data)); // Dispatch the fetched notifications
-        dispatch(setLoadingState(false)); // Set loading state to false after fetching
-      })
-      .catch(error => {
-        console.error('Failed to fetch notifications:', error);
-        dispatch(setLoadingState(false)); // Ensure loading state is set to false on error
-      });
+export const fetchNotifications = () => {
+  return (dispatch) => {
+    dispatch(setLoadingState(true));
+    return fetch("./notifications.json")
+      .then((res) => res.json())
+      .then((data) => dispatch(setNotifications(data)))
+      .catch((error) => {})
+      .finally(() => dispatch(setLoadingState(false)));
   };
-}
+};
