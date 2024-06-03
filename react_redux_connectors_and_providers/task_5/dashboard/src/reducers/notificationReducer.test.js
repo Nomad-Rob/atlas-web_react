@@ -1,13 +1,14 @@
 import { fromJS } from 'immutable';
 import notificationReducer from './notificationReducer';
-import { FETCH_NOTIFICATIONS_SUCCESS, MARK_AS_READ, SET_TYPE_FILTER } from '../actions/notificationActionTypes';
+import { FETCH_NOTIFICATIONS_SUCCESS, MARK_AS_READ, SET_TYPE_FILTER, SET_LOADING_STATE } from '../actions/notificationActionTypes';
 import { notificationsNormalizer } from '../schema/notifications';
 
 describe('notificationReducer', () => {
   const initialState = fromJS({
     entities: {},
     ids: [],
-    filter: 'DEFAULT'
+    filter: 'DEFAULT',
+    loading: false
   });
 
   it('should return the initial state', () => {
@@ -28,7 +29,8 @@ describe('notificationReducer', () => {
     expect(notificationReducer(initialState, action)).toEqual(fromJS({
       entities: normalizedData.entities.notifications,
       ids: normalizedData.result,
-      filter: 'DEFAULT'
+      filter: 'DEFAULT',
+      loading: false
     }));
   });
 
@@ -38,7 +40,8 @@ describe('notificationReducer', () => {
         '2': { id: 2, type: "urgent", value: "New resume available", isRead: false }
       },
       ids: [2],
-      filter: 'DEFAULT'
+      filter: 'DEFAULT',
+      loading: false
     });
     const action = {
       type: MARK_AS_READ,
@@ -53,5 +56,13 @@ describe('notificationReducer', () => {
       filter: 'URGENT'
     };
     expect(notificationReducer(initialState, action).get('filter')).toBe('URGENT');
+  });
+
+  it('should handle SET_LOADING_STATE', () => {
+    const action = {
+      type: SET_LOADING_STATE,
+      isLoading: true
+    };
+    expect(notificationReducer(initialState, action).get('loading')).toBe(true);
   });
 });

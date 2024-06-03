@@ -5,7 +5,6 @@ import Notifications from './Notifications';
 import NotificationItem from './NotificationItem';
 
 describe('Notifications', () => {
-  // Suppress Aphrodite style injection during tests to prevent side effects
   beforeEach(() => {
     StyleSheetTestUtils.suppressStyleInjection();
   });
@@ -15,7 +14,7 @@ describe('Notifications', () => {
   });
 
   it('renders without crashing', () => {
-    const wrapper = shallow(<Notifications displayDrawer={false} listNotifications={[]} handleDisplayDrawer={() => {}} handleHideDrawer={() => {}} />);
+    const wrapper = shallow(<Notifications displayDrawer={false} listNotifications={[]} handleDisplayDrawer={() => {}} handleHideDrawer={() => {}} fetchNotifications={() => {}} />);
     expect(wrapper.exists()).toBe(true);
   });
 
@@ -27,9 +26,10 @@ describe('Notifications', () => {
         handleDisplayDrawer={handleDisplayDrawerMock}
         handleHideDrawer={() => {}}
         displayDrawer={false}
+        fetchNotifications={() => {}}
       />
     );
-    wrapper.find('.menuItem').simulate('click'); // Ensure your click target has a correct selector
+    wrapper.find('.menuItem').simulate('click');
     expect(handleDisplayDrawerMock).toHaveBeenCalled();
   });
 
@@ -41,14 +41,15 @@ describe('Notifications', () => {
         handleDisplayDrawer={() => {}}
         handleHideDrawer={handleHideDrawerMock}
         displayDrawer={true}
+        fetchNotifications={() => {}}
       />
     );
-    wrapper.find('button').simulate('click'); // Adjust if your button has a specific class or id
+    wrapper.find('button').simulate('click');
     expect(handleHideDrawerMock).toHaveBeenCalled();
   });
 
   it('does not render notifications when displayDrawer is false', () => {
-    const wrapper = shallow(<Notifications displayDrawer={false} listNotifications={[{id: 1, type: 'default', value: 'New course available'}]} handleDisplayDrawer={() => {}} handleHideDrawer={() => {}} />);
+    const wrapper = shallow(<Notifications displayDrawer={false} listNotifications={[{id: 1, type: 'default', value: 'New course available'}]} handleDisplayDrawer={() => {}} handleHideDrawer={() => {}} fetchNotifications={() => {}} />);
     expect(wrapper.find(NotificationItem).length).toBe(0);
   });
 
@@ -57,7 +58,7 @@ describe('Notifications', () => {
       { id: 1, type: 'default', value: 'New course available' },
       { id: 2, type: 'urgent', value: 'Session starting soon!' }
     ];
-    const wrapper = shallow(<Notifications displayDrawer={true} listNotifications={notifications} handleDisplayDrawer={() => {}} handleHideDrawer={() => {}} />);
+    const wrapper = shallow(<Notifications displayDrawer={true} listNotifications={notifications} handleDisplayDrawer={() => {}} handleHideDrawer={() => {}} fetchNotifications={() => {}} />);
     expect(wrapper.find(NotificationItem).length).toBe(notifications.length);
   });
 
@@ -71,9 +72,24 @@ describe('Notifications', () => {
         markNotificationAsRead={markNotificationAsReadMock}
         handleDisplayDrawer={() => {}}
         handleHideDrawer={() => {}}
+        fetchNotifications={() => {}}
       />
     );
     wrapper.find(NotificationItem).simulate('click');
     expect(markNotificationAsReadMock).toHaveBeenCalledWith(1);
+  });
+
+  it('calls fetchNotifications when component mounts', () => {
+    const fetchNotificationsMock = jest.fn();
+    shallow(
+      <Notifications
+        displayDrawer={false}
+        listNotifications={[]}
+        handleDisplayDrawer={() => {}}
+        handleHideDrawer={() => {}}
+        fetchNotifications={fetchNotificationsMock}
+      />
+    );
+    expect(fetchNotificationsMock).toHaveBeenCalled();
   });
 });

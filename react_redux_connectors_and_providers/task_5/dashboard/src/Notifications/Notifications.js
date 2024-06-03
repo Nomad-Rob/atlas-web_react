@@ -5,7 +5,6 @@ import NotificationItem from './NotificationItem';
 import { connect } from 'react-redux';
 import { fetchNotifications } from '../actions/notificationActionCreators';
 
-// Define keyframes for the animations using Aphrodite
 const fadeIn = {
   from: { opacity: 0.5 },
   to: { opacity: 1 },
@@ -17,7 +16,6 @@ const bounce = {
   '100%': { transform: 'translateY(5px)' },
 };
 
-// Define styles using Aphrodite
 const styles = StyleSheet.create({
   menuItem: {
     position: 'fixed',
@@ -42,13 +40,13 @@ const styles = StyleSheet.create({
       top: 0,
       left: 0,
       right: 0,
-      bottom: 0, // Full screen on small devices
+      bottom: 0,
     },
   },
   notificationsContentUl: {
     paddingLeft: '2.3rem',
     '@media (max-width: 900px)': {
-      paddingLeft: '0', // No padding on small screens
+      paddingLeft: '0',
     },
   },
   notificationDefault: {
@@ -57,7 +55,7 @@ const styles = StyleSheet.create({
     fontSize: '0.8rem',
     color: '#1d1d7f',
     '@media (max-width: 900px)': {
-      fontSize: '20px', // Larger font size on small screens
+      fontSize: '20px',
     },
   },
   notificationUrgent: {
@@ -66,38 +64,38 @@ const styles = StyleSheet.create({
     fontSize: '0.8rem',
     color: 'red',
     '@media (max-width: 900px)': {
-    fontSize: '20px', // Larger font size on small screens
+      fontSize: '20px',
     },
   },
 });
 
 class Notifications extends PureComponent {
   componentDidMount() {
-      this.props.fetchNotifications();
+    this.props.fetchNotifications();
   }
 
   render() {
-      const { listNotifications, markNotificationAsRead, handleDisplayDrawer, handleHideDrawer, displayDrawer } = this.props;
+    const { listNotifications, markNotificationAsRead, handleDisplayDrawer, handleHideDrawer, displayDrawer } = this.props;
 
-      return (
-          <div className={css(styles.menuItem)} onClick={handleDisplayDrawer} style={{ display: 'block' }}>
-              <div className="Notifications" style={{ display: displayDrawer ? 'block' : 'none' }}>
-                  <button onClick={handleHideDrawer}>Close</button>
-                  <ul className={css(styles.notificationsContentUl)}>
-                      {listNotifications.map(notification => (
-                          <NotificationItem
-                              key={notification.id}
-                              id={notification.id}
-                              type={notification.type}
-                              value={notification.value}
-                              html={notification.html}
-                              markAsRead={() => markNotificationAsRead(notification.id)}
-                          />
-                      ))}
-                  </ul>
-              </div>
-          </div>
-      );
+    return (
+      <div className={css(styles.menuItem)} onClick={handleDisplayDrawer} style={{ display: 'block' }}>
+        <div className="Notifications" style={{ display: displayDrawer ? 'block' : 'none' }}>
+          <button onClick={handleHideDrawer}>Close</button>
+          <ul className={css(styles.notificationsContentUl)}>
+            {listNotifications.map(notification => (
+              <NotificationItem
+                key={notification.id}
+                id={notification.id}
+                type={notification.type}
+                value={notification.value}
+                html={notification.html}
+                markAsRead={() => markNotificationAsRead(notification.id)}
+              />
+            ))}
+          </ul>
+        </div>
+      </div>
+    );
   }
 }
 
@@ -114,6 +112,7 @@ Notifications.propTypes = {
   handleDisplayDrawer: PropTypes.func,
   handleHideDrawer: PropTypes.func,
   markNotificationAsRead: PropTypes.func,
+  fetchNotifications: PropTypes.func.isRequired,
 };
 
 Notifications.defaultProps = {
