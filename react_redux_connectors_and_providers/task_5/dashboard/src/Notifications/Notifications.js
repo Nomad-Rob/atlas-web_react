@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, css } from 'aphrodite';
 import NotificationItem from './NotificationItem';
-import NotificationItemShape from './NotificationItemShape';
 import { connect } from 'react-redux';
 import { fetchNotifications } from '../actions/notificationActionCreators';
 
@@ -104,10 +103,17 @@ class Notifications extends PureComponent {
 
 Notifications.propTypes = {
   displayDrawer: PropTypes.bool,
-  listNotifications: PropTypes.arrayOf(NotificationItemShape),
+  listNotifications: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      html: PropTypes.shape({ __html: PropTypes.string }),
+      type: PropTypes.string.isRequired,
+      value: PropTypes.string,
+    })
+  ),
   handleDisplayDrawer: PropTypes.func,
   handleHideDrawer: PropTypes.func,
-  markNotificationAsRead: PropTypes.func, // Define prop type for the new function
+  markNotificationAsRead: PropTypes.func,
 };
 
 Notifications.defaultProps = {
@@ -115,7 +121,7 @@ Notifications.defaultProps = {
   listNotifications: [],
   handleDisplayDrawer: () => {},
   handleHideDrawer: () => {},
-  markNotificationAsRead: () => {} // Provide a default no-op function
+  markNotificationAsRead: () => {}
 };
 
 const mapStateToProps = (state) => {

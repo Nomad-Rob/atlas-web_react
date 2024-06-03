@@ -62,12 +62,7 @@ class App extends Component {
               email: '',
               password: '',
               isLoggedIn: false
-          },
-          listNotifications: [
-              { id: 1, type: 'default', value: 'New course available' },
-              { id: 2, type: 'urgent', value: 'New resume available' },
-              { id: 3, type: 'urgent', html: { __html: '<strong>Urgent requirement</strong> - complete by EOD' } }
-          ]
+          }
       };
   }
 
@@ -91,12 +86,6 @@ class App extends Component {
       });
   };
 
-  markNotificationAsRead = (id) => {
-      this.setState(prevState => ({
-          listNotifications: prevState.listNotifications.filter(notification => notification.id !== id)
-      }));
-  };
-
   componentDidMount() {
       document.addEventListener('keydown', this.handleKeydown);
   }
@@ -113,7 +102,7 @@ class App extends Component {
   };
 
   render() {
-      const { isLoggedIn, displayDrawer, listNotifications, displayNotificationDrawer, hideNotificationDrawer } = this.props;
+      const { isLoggedIn, displayDrawer } = this.props;
 
       return (
           <AppContext.Provider value={{ user: this.state.user, logOut: this.logOut }}>
@@ -121,9 +110,7 @@ class App extends Component {
                   <Header />
                   <div className={css(styles.headerNotifications)}>
                       <Notifications
-                          listNotifications={listNotifications}
                           displayDrawer={displayDrawer}
-                          markNotificationAsRead={this.markNotificationAsRead}
                       />
                   </div>
               </div>
@@ -152,14 +139,12 @@ class App extends Component {
 App.propTypes = {
   isLoggedIn: PropTypes.bool,
   displayDrawer: PropTypes.bool,
-  listNotifications: PropTypes.array,
   listCourses: PropTypes.array,
 };
 
 App.defaultProps = {
   isLoggedIn: false,
   displayDrawer: false,
-  listNotifications: [],
   listCourses: [],
 };
 
