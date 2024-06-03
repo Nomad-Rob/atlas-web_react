@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { StyleSheet, css } from 'aphrodite';
 import NotificationItem from './NotificationItem';
 import { connect } from 'react-redux';
-import { fetchNotifications } from '../actions/notificationActionCreators';
+import { fetchNotifications, markAsRead } from '../actions/notificationActionCreators';
+import { getUnreadNotifications } from '../selectors/notificationSelector';
 
 const fadeIn = {
   from: { opacity: 0.5 },
@@ -131,6 +132,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   fetchNotifications,
+  markNotificationAsRead: markAsRead,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Notifications);
