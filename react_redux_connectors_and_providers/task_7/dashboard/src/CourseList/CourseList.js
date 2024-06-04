@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import CourseShape from './CourseShape';
 import CourseListRow from './CourseListRow';
+import { fetchCourses, selectCourse, unSelectCourse } from '../actions/courseActionCreators';
+import { courseSelector } from '../selectors/courseSelector';
 import { StyleSheet, css } from 'aphrodite';
 
 const styles = StyleSheet.create({
@@ -37,20 +39,37 @@ const styles = StyleSheet.create({
 });
 
 
+function CourseList({ courses, fetchCourses, selectCourse, unSelectCourse }) {
+  useEffect(() => {
+    fetchCourses();
+  }, [fetchCourses]);
 
-function CourseList({ listCourses }) {
+  function onChangeRow(id, checked) {
+    if (checked) {
+      selectCourse(id);
+    } else {
+      unSelectCourse(id);
+    }
+  }
+
   return (
-    <table id='CourseList'>
+    <table className={css(styles.courseList)}>
       <thead>
         <CourseListRow textFirstCell='Available courses' isHeader={true} />
         <CourseListRow textFirstCell='Course name' textSecondCell='Credit' isHeader={true} />
       </thead>
       <tbody>
-        {listCourses.length === 0 ? (
+        {courses.length === 0 ? (
           <CourseListRow textFirstCell='No course available yet' isHeader={false} />
         ) : (
-          listCourses.map(course => (
-            <CourseListRow key={course.id} textFirstCell={course.name} textSecondCell={course.credit} isHeader={false} />
+          courses.map(course => (
+            <CourseListRow key={course.id}
+                           textFirstCell={course.name}
+                           textSecondCell={course.credit}
+                           isHeader={false}
+                           isChecked={course.isSelected}
+                           onChange={(checked) => onChangeRow(course.id, checked)}
+            />
           ))
         )}
       </tbody>
@@ -59,11 +78,20 @@ function CourseList({ listCourses }) {
 }
 
 CourseList.propTypes = {
-  listCourses: PropTypes.arrayOf(CourseShape),
+  courses: PropTypes.array.isRequired,
+  fetchCourses: PropTypes.func.isRequired,
+  selectCourse: PropTypes.func.isRequired,
+  unSelectCourse: PropTypes.func.isRequired
 };
 
-CourseList.defaultProps = {
-  listCourses: [],
+const mapStateToProps = (state) => ({
+  courses: courseSelector(state)
+});
+
+const mapDispatchToProps = {
+  fetchCourses,
+  selectCourse,
+  unSelectCourse
 };
 
-export default CourseList;
+export default connect(mapStateToProps, mapDispatchToProps)(CourseList);
