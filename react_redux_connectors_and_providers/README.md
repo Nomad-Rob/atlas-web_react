@@ -3,6 +3,8 @@
   Resources
 </h2>
 
+Not Complete
+
 Read or watch:
 * [Redux CreateStore](https://react-redux.js.org/api/connect)
 * [Redux Connect](https://react-redux.js.org/api/connect)
